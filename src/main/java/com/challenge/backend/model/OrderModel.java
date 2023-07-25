@@ -26,6 +26,6 @@ public class OrderModel {
     @Column
     private BigDecimal precoTotal;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "orderModel")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "orderModel")
     private List<ItemModel> itens;
 }

@@ -11,7 +11,7 @@ public class OrderMapper {
     public static List<Itens> toResponse(List<ItemModel> itemModel) {
         var itensList = new ArrayList<Itens>();
         itemModel.forEach(item -> {
-            var newItem = new Itens(item.getId(), item.getPreco(), item.getQuantidade(), item.getPrecoParcial());
+            var newItem = new Itens(item.getIdProduto(), item.getPreco(), item.getQuantidade(), item.getPrecoParcial());
             itensList.add(newItem);
         });
         return itensList;

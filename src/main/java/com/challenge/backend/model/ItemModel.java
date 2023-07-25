@@ -9,14 +9,21 @@ import java.math.BigDecimal;
 @Data
 public class ItemModel {
     public ItemModel(Long id, BigDecimal preco, int quantidade, BigDecimal precoParcial) {
-        this.id = id;
+        this.idProduto = id;
         this.preco = preco;
         this.quantidade = quantidade;
         this.precoParcial = precoParcial;
     }
+    public ItemModel() {
+
+    }
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @Column
+    private Long idProduto;
 
     @Column
     private BigDecimal preco;
@@ -30,8 +37,4 @@ public class ItemModel {
     @ManyToOne
     @JoinColumn(name = "order_id")
     private OrderModel orderModel;
-
-    public ItemModel() {
-
-    }
 }
