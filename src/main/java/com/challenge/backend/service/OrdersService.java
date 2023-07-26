@@ -1,8 +1,8 @@
 package com.challenge.backend.service;
 
-import com.challenge.backend.dto.orders.CreateOrdersRequest;
-import com.challenge.backend.dto.orders.UpdateItensOrderRequest;
-import com.challenge.backend.dto.orders.UpdateStatusOrderRequest;
+import com.challenge.backend.dto.orders.request.CreateOrdersRequest;
+import com.challenge.backend.dto.orders.request.UpdateItensOrderRequest;
+import com.challenge.backend.dto.orders.request.UpdateStatusOrderRequest;
 import com.challenge.backend.dto.products.ProductsDto;
 import com.challenge.backend.dto.users.UserDto;
 import com.challenge.backend.enums.OrderStatus;
@@ -80,42 +80,54 @@ public class OrdersService {
             orderRepository.save(order.get());
             return order;
         }
-
         return Optional.empty();
     }
 
+    @Transactional
     public Optional<OrderModel> updateItensOrder(UpdateItensOrderRequest updateItensOrderRequest) {
 
-        Optional<OrderModel> order = orderRepository.findById(updateItensOrderRequest.getId());
+        Optional<OrderModel> orderOptional = orderRepository.findById(updateItensOrderRequest.getId());
 
-        if (order.isPresent()) {
+        if (orderOptional.isPresent()) {
+            OrderModel order = orderOptional.get();
             var quantityItem = this.findRepeatedIds(updateItensOrderRequest);
-            var itemsList = order.get().getItens();
+            var itemsList = order.getItens();
 
             List<ProductsDto> products = productsRepository.getProducts().collectList().block();
 
-            products.forEach(productsDto -> {
+            for (Map<String, Integer> entry : quantityItem) {
+                int id = entry.get("id");
+                int count = entry.get("count");
 
-                for (Map<String, Integer> entry : quantityItem) {
+                Optional<ItemModel> existingItem = itemsList.stream()
+                        .filter(item -> item.getIdProduto().equals((long) id))
+                        .findFirst();
 
-                    int id = entry.get("id");
-                    int count = entry.get("count");
-
-                    if (id == productsDto.getId()) {
-                        var pricePartial = productsDto.getPrice().multiply(BigDecimal.valueOf(count));
-
-                        if (order.get().getPrecoTotal() == null) {
-                            order.get().setPrecoTotal(pricePartial);
-                        } else {
-                            order.get().setPrecoTotal(order.get().getPrecoTotal().add(pricePartial));
-                        }
-                        itemsList.add(new ItemModel(productsDto.getId(), productsDto.getPrice(), count, pricePartial));
-                    }
+                if (existingItem.isPresent()) {
+                    ItemModel itemModel = existingItem.get();
+                    itemModel.setQuantidade(itemModel.getQuantidade() + count);
+                    itemModel.setPrecoParcial(itemModel.getPreco().multiply(BigDecimal.valueOf(itemModel.getQuantidade())));
+                } else {
+                    // Item não existe na lista, então adicionamos um novo item
+                    products.stream()
+                            .filter(product -> product.getId() == id)
+                            .findFirst()
+                            .ifPresent(product -> {
+                                BigDecimal pricePartial = product.getPrice().multiply(BigDecimal.valueOf(count));
+                                itemsList.add(new ItemModel(product.getId(), product.getPrice(), count, pricePartial));
+                            });
                 }
-            });
-            order.get().setItens(itemsList);
+            }
+
+            BigDecimal totalPrice = itemsList.stream()
+                    .map(ItemModel::getPrecoParcial)
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+            order.setPrecoTotal(totalPrice);
+
+            orderRepository.save(order);
+            return orderOptional;
         }
-        return Optional.of(order.get());
+        return Optional.empty();
     }
 
     public List<Map<String, Integer>> findRepeatedIds(CreateOrdersRequest createOrdersRequest) {

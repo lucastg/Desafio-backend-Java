@@ -12,6 +12,10 @@ import java.util.UUID;
 @Data
 public class OrderModel {
 
+    public OrderModel() {
+
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
@@ -26,6 +30,9 @@ public class OrderModel {
     @Column
     private BigDecimal precoTotal;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "orderModel")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "order_id")
     private List<ItemModel> itens;
+
+
 }

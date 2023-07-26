@@ -1,6 +1,6 @@
 package com.challenge.backend.mapper;
 
-import com.challenge.backend.dto.orders.Itens;
+import com.challenge.backend.dto.orders.response.Itens;
 import com.challenge.backend.model.ItemModel;
 
 import java.util.ArrayList;

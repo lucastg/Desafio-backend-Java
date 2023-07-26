@@ -1,4 +1,4 @@
-package com.challenge.backend.dto.orders;
+package com.challenge.backend.dto.orders.request;
 
 import lombok.Data;
 
@@ -14,10 +14,9 @@ public class UpdateItensOrderRequest {
 
 
     @Data
-    public class UpdateItems{
+    public static class UpdateItems{
         public int id;
         public BigDecimal price;
-
     }
 
 }

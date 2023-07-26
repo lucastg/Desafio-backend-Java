@@ -1,16 +1,14 @@
 package com.challenge.backend.controller;
 
-import com.challenge.backend.dto.orders.CreateOrdersRequest;
-import com.challenge.backend.dto.orders.OrdersResponse;
-import com.challenge.backend.dto.orders.UpdateItensOrderRequest;
-import com.challenge.backend.dto.orders.UpdateStatusOrderRequest;
+import com.challenge.backend.dto.orders.request.CreateOrdersRequest;
+import com.challenge.backend.dto.orders.request.UpdateItensOrderRequest;
+import com.challenge.backend.dto.orders.request.UpdateStatusOrderRequest;
+import com.challenge.backend.dto.orders.response.OrdersResponse;
 import com.challenge.backend.service.OrdersService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/orders")
@@ -31,16 +29,21 @@ public class OrdersController {
     }
 
     @PatchMapping()
-    public Optional<OrdersResponse> updateStatusOrder(@RequestBody UpdateStatusOrderRequest updateStatusOrderRequest) {
-        var updatedOrder = ordersService.updateStatusOrder(updateStatusOrderRequest);
-        System.out.println(updatedOrder);
-        return Optional.of(new OrdersResponse(updatedOrder.get()));
+    public ResponseEntity<OrdersResponse> updateStatusOrder(@RequestBody UpdateStatusOrderRequest updateStatusOrderRequest) {
+        var updatedStatusOrder = ordersService.updateStatusOrder(updateStatusOrderRequest);
+
+        return updatedStatusOrder.map(orderModel -> ResponseEntity.status(HttpStatus.OK)
+                .body(new OrdersResponse(orderModel))).orElseGet(()
+                -> ResponseEntity.notFound().build());
     }
 
     @PutMapping
-    public Optional<OrdersResponse> updateItensOrder(UpdateItensOrderRequest updateItensOrderRequest) {
-        var updatedOrder = ordersService.updateItensOrder(updateItensOrderRequest);
-        return Optional.of(new OrdersResponse(updatedOrder.get()));
+    public ResponseEntity<OrdersResponse> updateItensOrder(@RequestBody UpdateItensOrderRequest updateItensOrderRequest) {
+        var updatedItensOrder = ordersService.updateItensOrder(updateItensOrderRequest);
+
+        return updatedItensOrder.map(orderModel -> ResponseEntity.status(HttpStatus.OK)
+                .body(new OrdersResponse(orderModel))).orElseGet(()
+                -> ResponseEntity.notFound().build());
     }
 
 }

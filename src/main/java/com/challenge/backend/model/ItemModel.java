@@ -14,12 +14,13 @@ public class ItemModel {
         this.quantidade = quantidade;
         this.precoParcial = precoParcial;
     }
+
     public ItemModel() {
 
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column
@@ -34,7 +35,4 @@ public class ItemModel {
     @Column
     private BigDecimal precoParcial;
 
-    @ManyToOne
-    @JoinColumn(name = "order_id")
-    private OrderModel orderModel;
 }

@@ -1,4 +1,4 @@
-package com.challenge.backend.dto.orders;
+package com.challenge.backend.dto.orders.response;
 
 import lombok.Data;
 
