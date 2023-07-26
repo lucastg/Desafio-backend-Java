@@ -26,5 +26,5 @@ cd docker
 
 - Foi utilizado como banco de dados o Postgre, que tambem esta hospedado em nuvem.
 
-*Obs.: A aplicação fica inativa após 15 minutos sem uso, então a primeira requisição levara um tempo consideravel caso a aplicação esteja inativa.*
+*Obs.: A aplicação fica inativa após 15 minutos sem uso, então a primeira requisição levara um tempo considerável caso a aplicação esteja inativa.*
 
