@@ -12,10 +12,6 @@ import java.util.UUID;
 @Data
 public class OrderModel {
 
-    public OrderModel() {
-
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
@@ -33,6 +29,10 @@ public class OrderModel {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "order_id")
     private List<ItemModel> itens;
+
+    public OrderModel() {
+
+    }
 
 
 }

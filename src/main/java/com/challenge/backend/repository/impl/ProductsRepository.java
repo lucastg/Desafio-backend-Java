@@ -1,4 +1,4 @@
-package com.challenge.backend.repository.product;
+package com.challenge.backend.repository.impl;
 
 import com.challenge.backend.dto.products.ProductsDto;
 import com.challenge.backend.repository.BaseRepository;
@@ -7,7 +7,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 
 @Component
-public class ProductsRepository extends BaseRepository {
+public class ProductsRepository extends BaseRepository implements com.challenge.backend.repository.ProductsRepository {
 
     protected final String productEndpoint = "/products";
 

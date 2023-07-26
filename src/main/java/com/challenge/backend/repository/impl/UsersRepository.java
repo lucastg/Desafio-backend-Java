@@ -1,4 +1,4 @@
-package com.challenge.backend.repository.user;
+package com.challenge.backend.repository.impl;
 
 import com.challenge.backend.dto.users.UserDto;
 import com.challenge.backend.repository.BaseRepository;
@@ -7,7 +7,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 @Component
-public class UsersRepository extends BaseRepository {
+public class UsersRepository extends BaseRepository implements com.challenge.backend.repository.UsersRepository {
     public final String usersEndpoint = "/users/{id}";
 
     public UsersRepository(WebClient.Builder webClientBuilder) {

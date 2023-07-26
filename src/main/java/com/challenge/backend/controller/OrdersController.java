@@ -28,7 +28,7 @@ public class OrdersController {
 
     }
 
-    @PatchMapping()
+    @PatchMapping("/status")
     public ResponseEntity<OrdersResponse> updateStatusOrder(@RequestBody UpdateStatusOrderRequest updateStatusOrderRequest) {
         var updatedStatusOrder = ordersService.updateStatusOrder(updateStatusOrderRequest);
 
@@ -37,7 +37,7 @@ public class OrdersController {
                 -> ResponseEntity.notFound().build());
     }
 
-    @PutMapping
+    @PutMapping()
     public ResponseEntity<OrdersResponse> updateItensOrder(@RequestBody UpdateItensOrderRequest updateItensOrderRequest) {
         var updatedItensOrder = ordersService.updateItensOrder(updateItensOrderRequest);
 
