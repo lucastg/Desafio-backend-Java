@@ -24,7 +24,7 @@ cd docker
 ### Clique no link abaixo para acessar o swagger da aplicação
 - [Swagger](https://desafio-back-end.onrender.com/swagger-ui/index.html)
 
-- Foi utilizado como banco de dados o Postgre, que tambem esta hospedade em nuvem.
+- Foi utilizado como banco de dados o Postgre, que tambem esta hospedado em nuvem.
 
 *Obs.: A aplicação fica inativa após 15 minutos sem uso, então a primeira requisição levara um tempo consideravel caso a aplicação esteja inativa.*
 
